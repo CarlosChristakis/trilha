@@ -1,0 +1,33 @@
+{
+  "name": "trilha-inovacao",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev --hostname 0.0.0.0",
+    "build": "next build",
+    "start": "next start --hostname 0.0.0.0",
+    "test": "tsx --test tests/*.test.ts",
+    "test:e2e": "playwright test",
+    "typecheck": "tsc --noEmit",
+    "build:hostinger": "node scripts/build-hostinger.mjs",
+    "preview:hostinger": "node scripts/serve-hostinger.mjs"
+  },
+  "dependencies": {
+    "next": "16.3.7",
+    "react": "19.2.4",
+    "react-dom": "19.2.4",
+    "@supabase/supabase-js": "2.99.3",
+    "lucide-react": "0.577.0",
+    "zod": "4.3.6"
+  },
+  "devDependencies": {
+    "typescript": "5.9.3",
+    "@types/node": "24.12.0",
+    "@types/react": "19.2.14",
+    "@types/react-dom": "19.2.3",
+    "tailwindcss": "4.2.1",
+    "@tailwindcss/postcss": "4.2.1",
+    "tsx": "4.21.0",
+    "@playwright/test": "1.58.2"
+  }
+}

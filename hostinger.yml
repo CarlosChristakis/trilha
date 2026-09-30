@@ -1,0 +1,42 @@
+name: Gerar site para Hostinger
+on:
+  workflow_dispatch:
+  push:
+    branches: [main, master]
+permissions:
+  contents: read
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - name: Localizar projeto
+        id: project
+        shell: bash
+        run: |
+          if [ -f package.json ]; then
+            echo "dir=." >> "$GITHUB_OUTPUT"
+          elif [ -f estudo-inovacao/package.json ]; then
+            echo "dir=estudo-inovacao" >> "$GITHUB_OUTPUT"
+          else
+            echo "package.json não encontrado" >&2
+            exit 1
+          fi
+      - run: npm ci
+        working-directory: ${{ steps.project.outputs.dir }}
+      - run: npm test
+        working-directory: ${{ steps.project.outputs.dir }}
+      - run: npm run build:hostinger
+        working-directory: ${{ steps.project.outputs.dir }}
+        env:
+          NEXT_PUBLIC_SUPABASE_URL: ${{ vars.NEXT_PUBLIC_SUPABASE_URL }}
+          NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY: ${{ vars.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY }}
+      - uses: actions/upload-artifact@v4
+        with:
+          name: Trilha-Hostinger-site-pronto
+          path: ${{ steps.project.outputs.dir }}/hostinger-site/
+          include-hidden-files: true
+          if-no-files-found: error
